@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Privacy Policy · WebFoundry Capture</title>
+<meta name="description" content="How the WebFoundry Capture Chrome extension handles your data. Everything is processed on your device. No server, no analytics, nothing sold or shared.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='116' fill='%230B1115'/%3E%3Cg stroke='%230B1115' stroke-width='12' stroke-linejoin='round' paint-order='stroke'%3E%3Cpath d='M104 384 L256 324 L408 384 L256 444 Z' fill='%23FF6B47'/%3E%3Cpath d='M104 350 L256 290 L408 350 L256 410 Z' fill='%23F3F3F0'/%3E%3Cpath d='M104 316 L256 256 L408 316 L256 376 Z' fill='%2320B4FA'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+<style>
+:root{
+  --ink:#0B1115;--paper:#FFFFFF;--surface:#F6F7F5;--line:#E4E6E2;--line-strong:#CDD1CB;--muted:#667075;
+  --blue:#20B4FA;--blue-text:#0B6E9C;--orange:#FF6B47;--good:#1F7A4D;--bad:#C23A1C;--focus:rgba(32,180,250,.45);
+  --plate-mid:#0B1115;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{--ink:#F3F3F0;--paper:#0F1519;--surface:#161E23;--line:#253038;--line-strong:#34424C;--muted:#97A2A8;
+    --blue-text:#5CCBFF;--good:#5FD49A;--bad:#FF8A6B;--focus:rgba(32,180,250,.6);--plate-mid:#F3F3F0;color-scheme:dark}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Satoshi","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--blue-text);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+code,kbd{font:600 .86em/1.3 ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+code{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 5px;white-space:nowrap}
+
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+/* top bar — mirrors the extension popup header */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none}
+.brand svg{width:32px;height:32px;border-radius:8px;flex:none}
+.brand b{display:block;font-size:17px;line-height:1.1;letter-spacing:-.015em}
+.brand small{display:block;font-size:12px;color:var(--muted);line-height:1.2;margin-top:1px}
+.top .meta{margin-left:auto;font-size:13px;color:var(--muted)}
+
+/* hero */
+.hero{padding:56px 0 40px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.03em;margin:0 0 16px;font-weight:700;max-width:16ch}
+.lead{font-size:19px;line-height:1.5;color:var(--muted);margin:0;max-width:40em}
+.lead b{color:var(--ink);font-weight:600}
+.dates{display:flex;flex-wrap:wrap;gap:8px 20px;margin:24px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.dates b{color:var(--ink);font-weight:600}
+
+/* device boundary diagram */
+.flow{margin:40px 0 0;border:1.5px dashed var(--line-strong);border-radius:20px;padding:28px 24px 22px;position:relative}
+.flow-tag{position:absolute;top:-12px;left:20px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.flow-steps{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:12px;list-style:none;margin:0;padding:0}
+.flow-step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:center;min-height:88px}
+.flow-step svg{width:44px;height:44px}
+.flow-step b{display:block;font-size:15px;line-height:1.25}
+.flow-step span{display:block;font-size:13px;line-height:1.4;color:var(--muted)}
+.flow-steps>li[aria-hidden]{display:grid;place-items:center}
+.arrow{width:22px;height:22px;fill:none;stroke:var(--muted);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.flow-note{display:flex;align-items:center;gap:8px;margin:18px 0 0;font-size:13.5px;color:var(--muted)}
+.flow-note svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--bad);stroke-width:1.6;stroke-linecap:round}
+.ic-line{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ic-fill{fill:var(--paper);stroke:var(--line-strong)}
+
+/* at a glance */
+.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:32px 0 0;padding:0;list-style:none}
+.glance li{border:1px solid var(--line);border-radius:14px;padding:16px}
+.glance svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:10px}
+.glance b{display:block;font-size:15px;line-height:1.3;margin-bottom:3px}
+.glance span{display:block;font-size:13.5px;line-height:1.45;color:var(--muted)}
+
+/* body layout */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;padding:48px 0 72px;border-top:1px solid var(--line);margin-top:48px}
+.toc{position:sticky;top:24px;align-self:start;font-size:14px}
+.toc p{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{counter-increment:t}
+.toc a{display:grid;grid-template-columns:24px 1fr;padding:5px 0;color:var(--muted);text-decoration:none;line-height:1.35}
+.toc a::before{content:counter(t,decimal-leading-zero);font-variant-numeric:tabular-nums;font-size:12px;font-weight:700;color:var(--line-strong);padding-top:1px}
+.toc a:hover{color:var(--ink)}
+
+article{max-width:44em}
+section{padding:0 0 40px}
+section+section{border-top:1px solid var(--line);padding-top:36px}
+h2{font-size:24px;line-height:1.2;letter-spacing:-.02em;margin:0 0 14px;font-weight:700;display:flex;gap:12px;align-items:baseline}
+h2 .n{font-size:13px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;min-width:22px}
+h3{font-size:16px;margin:22px 0 8px;font-weight:700}
+p{margin:0 0 14px}
+article ul{margin:0 0 14px;padding-left:20px}
+article li{margin:0 0 6px}
+.muted{color:var(--muted)}
+
+/* data table */
+.tbl{width:100%;border-collapse:collapse;font-size:14.5px;line-height:1.45;margin:6px 0 16px}
+.tbl th{text-align:left;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:0 12px 10px 0;border-bottom:1px solid var(--line-strong)}
+.tbl td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td:first-child{font-weight:600;width:34%}
+.tbl small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* never list */
+.never{list-style:none;padding:0!important;display:grid;grid-template-columns:1fr 1fr;gap:0 24px;border-top:1px solid var(--line)}
+.never li{display:grid;grid-template-columns:20px 1fr;gap:10px;padding:10px 0;margin:0!important;border-bottom:1px solid var(--line);font-size:15px;line-height:1.4}
+.never svg{width:16px;height:16px;margin-top:3px;fill:none;stroke:var(--bad);stroke-width:1.8;stroke-linecap:round}
+
+/* permissions */
+.perms{list-style:none;padding:0!important;border-top:1px solid var(--line)}
+.perms li{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:12px 0;margin:0!important;border-bottom:1px solid var(--line);font-size:15px;line-height:1.5}
+.perms code{justify-self:start;align-self:start}
+
+.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:10px;padding:14px 16px;margin:6px 0 16px;font-size:15px}
+.callout.warn{border-left-color:var(--orange)}
+.callout p:last-child{margin:0}
+
+.contact{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:10px;background:var(--ink);color:var(--paper);font-weight:600;font-size:15px;text-decoration:none}
+.btn:hover{opacity:.88;color:var(--paper)}
+.btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+footer{border-top:1px solid var(--line);padding:24px 0 40px;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:900px){
+  .glance{grid-template-columns:1fr 1fr}
+  .layout{grid-template-columns:1fr;gap:24px}
+  .toc{position:static;border:1px solid var(--line);border-radius:14px;padding:16px}
+  .toc ol{columns:2;column-gap:20px}
+}
+@media (max-width:700px){
+  .wrap{padding:0 16px}
+  .top .meta{display:none}
+  .hero{padding:40px 0 28px}
+  .lead{font-size:17px}
+  .flow{padding:24px 14px 18px}
+  .flow-steps{grid-template-columns:1fr;gap:8px}
+  .flow-steps .arrow{transform:rotate(90deg)}
+  .never{grid-template-columns:1fr}
+  .perms li{grid-template-columns:1fr;gap:6px}
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%!important}
+  .tbl tr{border-bottom:1px solid var(--line);padding:10px 0}
+  .tbl td{border:0;padding:2px 0}
+  .toc ol{columns:1}
+}
+@media (max-width:480px){.glance{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.toc,.top .meta{display:none}.layout{grid-template-columns:1fr}body{font-size:12pt}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="WebFoundry">
+      <svg viewBox="0 0 512 512" aria-hidden="true"><rect width="512" height="512" rx="116" fill="#0B1115"/><g stroke="#0B1115" stroke-width="12" stroke-linejoin="round" paint-order="stroke"><path d="M104 384 L256 324 L408 384 L256 444 Z" fill="#FF6B47"/><path d="M104 350 L256 290 L408 350 L256 410 Z" fill="#F3F3F0"/><path d="M104 316 L256 256 L408 316 L256 376 Z" fill="#20B4FA"/></g><path d="M136 84 H376 A40 40 0 0 1 416 124 V244 A40 40 0 0 1 376 284 H302 A14 14 0 0 1 288 270 V264 H364 A14 14 0 0 0 378 250 V150 A14 14 0 0 0 364 136 H150 A14 14 0 0 0 136 150 Z" fill="#F3F3F0"/><path d="M136 84 A40 40 0 0 0 96 124 V150 H136 Z" fill="#F3F3F0"/><path d="M96 150 H136 C136 176 158 188 196 194 C246 202 286 214 294 262 C298 286 286 304 270 316 C246 300 226 286 186 278 C130 268 96 250 96 206 Z" fill="#20B4FA"/><path d="M136 150 C136 176 158 188 196 194 C246 202 286 214 294 262 L296 296 C297 312 288 322 274 328 C300 338 338 332 366 320 C344 316 334 308 333 296 L330 262 C322 196 268 176 206 168 C170 163 150 160 136 150 Z" fill="#F3F3F0"/><circle cx="134" cy="110" r="11" fill="#FF6B47"/><circle cx="168" cy="110" r="11" fill="#20B4FA"/><circle cx="202" cy="110" r="11" fill="#0B1115"/></svg>
+      <span><b>WebFoundry</b><small>Website to Figma</small></span>
+    </a>
+    <span class="meta">Privacy policy · Chrome extension</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">WebFoundry Capture · Privacy policy</p>
+    <h1>Your captures never leave your computer.</h1>
+    <p class="lead">WebFoundry Capture turns the page you are viewing into a <b>.wfd</b> design file for Figma. All of the work happens <b>on your device</b>. There is no WebFoundry server and no analytics, and we don't sell or share your data.</p>
+    <ul class="dates">
+      <li>Effective <b>4 October 2026</b></li>
+      <li>Applies to <b>WebFoundry Capture 2.6.0</b> and later</li>
+      <li>Companion: <b>WebFoundry Importer</b> for Figma</li>
+    </ul>
+
+    <figure class="flow" aria-label="Data flow: your tab, then a .wfd file on your computer, then Figma. Everything stays on your device.">
+      <span class="flow-tag">Stays on your device</span>
+      <ol class="flow-steps">
+        <li class="flow-step">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><rect class="ic-fill" x="4" y="8" width="36" height="28" rx="5"/><path class="ic-line" d="M4 15h36"/><circle cx="9" cy="11.5" r="1.4" fill="#FF6B47"/><circle cx="13.5" cy="11.5" r="1.4" fill="#20B4FA"/><rect x="10" y="20" width="16" height="3" rx="1.5" fill="var(--line-strong)"/><rect x="10" y="26" width="24" height="3" rx="1.5" fill="var(--line)"/></svg>
+          <div><b>1 · The tab you choose</b><span>Read only after you click Capture</span></div>
+        </li>
+        <li aria-hidden="true"><svg class="arrow" viewBox="0 0 22 22"><path d="M4 11h14M13 6l5 5-5 5"/></svg></li>
+        <li class="flow-step">
+          <svg viewBox="0 0 44 44" aria-hidden="true"><path class="ic-fill" d="M10 4h17l9 9v27H10z"/><path class="ic-line" d="M27 4v9h9" style="stroke:var(--line-strong)"/><text x="23" y="31" text-anchor="middle" style="font:700 8.5px ui-monospace,Menlo,monospace;fill:var(--ink)">.wfd</text></svg>
+          <div><b>2 · A file on your computer</b><span>Saved to Downloads, or wherever you pick</span></div>
+        </li>
+        <li aria-hidden="true"><svg class="arrow" viewBox="0 0 22 22"><path d="M4 11h14M13 6l5 5-5 5"/></svg></li>
+        <li class="flow-step">
+          <svg viewBox="96 248 320 204" aria-hidden="true"><g stroke="var(--surface)" stroke-width="16" stroke-linejoin="round" paint-order="stroke"><path d="M104 384 L256 324 L408 384 L256 444 Z" fill="#FF6B47"/><path d="M104 350 L256 290 L408 350 L256 410 Z" fill="var(--plate-mid)"/><path d="M104 316 L256 256 L408 316 L256 376 Z" fill="#20B4FA"/></g></svg>
+          <div><b>3 · Into Figma</b><span>The importer plugin has no network access</span></div>
+        </li>
+      </ol>
+      <figcaption class="flow-note"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7"/><path d="M4 14L14 4"/></svg>Nothing is sent to WebFoundry or any third party. We have no server to send it to.</figcaption>
+    </figure>
+
+    <ul class="glance">
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><b>Processed locally</b><span>Captures are built in your browser and saved as a file you control.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-8 4 16 3-8h4"/><path d="M3 3l18 18"/></svg><b>No tracking</b><span>No analytics, no telemetry, no ads, no third-party scripts.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><b>No passwords or inputs</b><span>Typed form values and passwords are never captured.</span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><b>Never sold or shared</b><span>We don't sell, transfer or use your data for anything else.</span></li>
+    </ul>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#about">About this policy</a></li>
+        <li><a href="#reads">What the extension reads</a></li>
+        <li><a href="#never">What it never captures</a></li>
+        <li><a href="#where">Where your data goes</a></li>
+        <li><a href="#settings">Settings stored in Chrome</a></li>
+        <li><a href="#permissions">Permissions and why</a></li>
+        <li><a href="#sharing">Sharing your captures</a></li>
+        <li><a href="#third">Third parties and sale</a></li>
+        <li><a href="#retention">Retention and deletion</a></li>
+        <li><a href="#children">Children</a></li>
+        <li><a href="#changes">Changes to this policy</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <section id="about">
+        <h2><span class="n">01</span>About this policy</h2>
+        <p>This policy explains how the <b>WebFoundry Capture</b> Chrome extension (“the extension”, “we”, “us”) handles information when you use it. The extension has a single purpose: capturing a rendered web page as editable design data for the <b>WebFoundry Importer</b> plugin in Figma.</p>
+        <p>The extension only does something when you tell it to. Opening the popup, clicking <b>Capture page</b> or <b>Select element</b>, and saving the file are all your actions. It does not run in the background on the pages you browse.</p>
+      </section>
+
+      <section id="reads">
+        <h2><span class="n">02</span>What the extension reads</h2>
+        <p>When you start a capture, the extension reads the following from <b>the one tab you are capturing</b>, and only for as long as the capture takes:</p>
+        <table class="tbl">
+          <thead><tr><th scope="col">Information</th><th scope="col">Why it's needed</th></tr></thead>
+          <tbody>
+            <tr><td>Layout and styles<small>Positions, sizes, colours, spacing, borders, effects</small></td><td>To rebuild the page as Figma frames with Auto Layout, variables and text styles.</td></tr>
+            <tr><td>Visible text<small>Including link text and image alt text</small></td><td>To create editable text layers that match the page.</td></tr>
+            <tr><td>Images, icons and fonts<small>As already loaded or referenced by the page</small></td><td>To place images and vector icons and to identify the fonts actually rendered.</td></tr>
+            <tr><td>Images of canvas, video and embedded content</td><td>These can't be rebuilt as layers, so they are captured as images.</td></tr>
+            <tr><td>Page title and address<small>Address without any query string</small></td><td>To name the Figma frame (for example “Pricing · 1440”) and record where the design came from.</td></tr>
+            <tr><td>Link destinations<small>Without query strings</small></td><td>To keep links clickable in Figma. Removed when redaction is on.</td></tr>
+            <tr><td>Form control states<small>Only if you turn on “Include form control states”</small></td><td>To show checked boxes, radio buttons and selected options as they appear.</td></tr>
+          </tbody>
+        </table>
+        <p>If the page shows personal information, such as a logged-in account screen, it is part of what appears on the page, so it will be in the capture. The <b>Redact digits and e-mails</b> option replaces every digit with <code>0</code> and masks e-mail addresses in text, layer names, alt text and the page address, and removes links.</p>
+        <div class="callout warn"><p><b>What redaction doesn't cover:</b> names, or anything inside images, canvases, videos or embedded frames. Check the file before you share a capture of a customer screen.</p></div>
+      </section>
+
+      <section id="never">
+        <h2><span class="n">03</span>What it never captures</h2>
+        <ul class="never">
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Passwords or other values typed into fields</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Text area and editable-region contents</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Dropdown values (unless you turn on form states)</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Cookies, tokens or login credentials</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>The page's scripts or source code</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Query strings in addresses and links</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Other tabs, windows or your browsing history</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Your clicks, scrolling or keystrokes</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Your location or IP address</li>
+          <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>Any information about who you are</li>
+        </ul>
+        <p class="muted">Placeholder text in empty fields is captured, because it is part of the design.</p>
+      </section>
+
+      <section id="where">
+        <h2><span class="n">04</span>Where your data goes</h2>
+        <p><b>It stays on your computer.</b> The extension packages the capture in your browser and saves it as a <code>.wfd</code> file to your Downloads folder, or to a location you choose if “Ask where to save” is on.</p>
+        <ul>
+          <li>While the file is being saved, a temporary copy is held in the extension's private browser storage. It is deleted as soon as the file is handed to Chrome's download manager.</li>
+          <li>The extension does not send anything to WebFoundry or anyone else. It has no server, account system or analytics.</li>
+          <li>To include images, icons and fonts, the extension may request those files from <b>the website you are capturing</b>, the same way your browser loads them when you view the page, using your existing session with that site. These requests go only to that website and the services it already uses.</li>
+          <li>The WebFoundry Importer plugin for Figma is set to <b>no network access</b>. It reads the file you drop in and creates layers in your Figma document. Figma's own privacy policy covers your Figma files.</li>
+        </ul>
+      </section>
+
+      <section id="settings">
+        <h2><span class="n">05</span>Settings stored in Chrome</h2>
+        <p>The extension remembers a few preferences in Chrome's local extension storage, on your device only:</p>
+        <ul>
+          <li>Which viewports you selected and their widths</li>
+          <li>Image quality and capture options (hide overlays, redaction, form states, mobile user agent, ask where to save)</li>
+          <li>The current capture status and progress, shown in the popup</li>
+          <li>Whether you dismissed the “Get the Figma plugin” tip</li>
+        </ul>
+        <p>No page content or personal information is kept in these settings, and they are not synced to your Google account.</p>
+      </section>
+
+      <section id="permissions">
+        <h2><span class="n">06</span>Permissions and why</h2>
+        <ul class="perms">
+          <li><code>activeTab</code><span>Lets the extension work only on the tab you are looking at, and lets the popup tell you when Chrome blocks a page from being captured.</span></li>
+          <li><code>debugger</code><span>Chrome's DevTools Protocol is the only way to read a rendered page accurately enough to rebuild it in Figma, and to render it at the widths you pick. The extension attaches to that one tab when you click Capture and detaches as soon as it finishes or you cancel. Chrome shows a bar at the top of the tab while it is attached.</span></li>
+          <li><code>downloads</code><span>Saves the finished <code>.wfd</code> file to your computer.</span></li>
+          <li><code>storage</code><span>Remembers your settings, as described above.</span></li>
+          <li><code>offscreen</code><span>A technical helper that hands the finished file to Chrome's download manager. It has no interface and does nothing else.</span></li>
+        </ul>
+      </section>
+
+      <section id="sharing">
+        <h2><span class="n">07</span>Sharing your captures</h2>
+        <p>A <code>.wfd</code> file is yours, like any other file on your computer. It contains what was on the page when you captured it. If you send it to someone or import it into a shared Figma file, they can see that content. Use redaction and check the file before sharing captures of private or customer screens.</p>
+      </section>
+
+      <section id="third">
+        <h2><span class="n">08</span>Third parties and sale</h2>
+        <ul>
+          <li>We do not sell or transfer user data to third parties.</li>
+          <li>We do not use or transfer user data for any purpose unrelated to capturing pages for Figma.</li>
+          <li>We do not use or transfer user data to determine creditworthiness or for lending purposes.</li>
+          <li>We do not use data for advertising, and no person at WebFoundry can read your captures.</li>
+        </ul>
+        <div class="callout"><p>WebFoundry Capture's use of information complies with the <a href="https://developer.chrome.com/docs/webstore/program-policies/policies" rel="noopener">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.</p></div>
+      </section>
+
+      <section id="retention">
+        <h2><span class="n">09</span>Retention and deletion</h2>
+        <p>We don't hold any of your data, so there is nothing for us to keep or delete. You are in control:</p>
+        <ul>
+          <li><b>Captures:</b> delete the <code>.wfd</code> files from your computer whenever you like.</li>
+          <li><b>Settings:</b> removing the extension from <code>chrome://extensions</code> deletes all of its stored settings.</li>
+          <li><b>Figma imports:</b> delete the layers or file in Figma.</li>
+        </ul>
+      </section>
+
+      <section id="children">
+        <h2><span class="n">10</span>Children</h2>
+        <p>WebFoundry is a professional design tool and is not directed at children. We do not knowingly process information about children.</p>
+      </section>
+
+      <section id="changes">
+        <h2><span class="n">11</span>Changes to this policy</h2>
+        <p>If a future version changes how data is handled, we will update this page and its effective date before that version is released. If a change ever involves data leaving your device, we will describe it here first and ask for your consent where required.</p>
+      </section>
+
+      <section id="contact">
+        <h2><span class="n">12</span>Contact</h2>
+        <p>Questions about this policy or how WebFoundry handles data? Get in touch.</p>
+        <div class="contact">
+          <a class="btn" href="mailto:forgefaze@gmail.com?subject=WebFoundry%20privacy"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><path d="M2 4l6 5 6-5"/></svg>Email us</a>
+          <span class="muted">Jahanzaib.ashraf@aceunion.com</span>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 WebFoundry · Website to Figma</span>
+    <span>Privacy policy · effective 4 October 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
